@@ -1,1 +1,0 @@
-# GEL-D-By-Alayna

@@ -1,0 +1,258 @@
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom/client';
+import { 
+  Menu, X, Instagram, MapPin, Clock, 
+  CheckCircle, Mail, Sparkles, Diamond, 
+  Paintbrush, CreditCard, Camera 
+} from 'lucide-react';
+
+// --- Navbar Component ---
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Services', href: '#services' },
+    { name: 'Gallery', href: '#portfolio' },
+    { name: 'Policy', href: '#policy' },
+    { name: 'Contact', href: '#booking' },
+  ];
+
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    const targetId = href.replace('#', '');
+    const elem = document.getElementById(targetId);
+    if (elem) {
+      window.scrollTo({ top: elem.offsetTop - 80, behavior: 'smooth' });
+    }
+    setMobileMenuOpen(false);
+  };
+
+  return (
+    <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/95 backdrop-blur-md py-3 border-b border-gray-100 shadow-sm' : 'bg-transparent py-6 border-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
+        <a href="#home" onClick={(e) => handleNavClick(e, '#home')} className="group flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full border border-brand-gold flex items-center justify-center font-serif text-lg text-brand-gold group-hover:bg-brand-gold group-hover:text-white transition-all">GA</div>
+          <div className="flex flex-col">
+            <span className="font-serif text-xl font-bold tracking-tight text-gray-900 leading-none">GEL’D</span>
+            <span className="text-[8px] tracking-[0.3em] uppercase text-brand-gold font-bold">by Alayna</span>
+          </div>
+        </a>
+        <div className="hidden lg:flex items-center space-x-10">
+          {navLinks.map((link) => (
+            <a key={link.name} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-800 hover:text-brand-gold transition-colors relative group">
+              {link.name}
+              <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-brand-gold transition-all group-hover:w-full"></span>
+            </a>
+          ))}
+          <a href="#booking" onClick={(e) => handleNavClick(e, '#booking')} className="bg-gray-900 text-white px-8 py-2.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-brand-gold transition-all shadow-md">Book Now</a>
+        </div>
+        <button className="lg:hidden text-gray-800 p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+      <div className={`lg:hidden fixed inset-0 z-40 bg-white transition-transform duration-500 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex flex-col items-center justify-center h-full space-y-8">
+          {navLinks.map((link) => (
+            <a key={link.name} href={link.href} className="text-xl font-serif tracking-widest text-gray-900 uppercase italic" onClick={(e) => handleNavClick(e, link.href)}>{link.name}</a>
+          ))}
+          <a href="#booking" className="bg-brand-gold text-white px-10 py-4 rounded-full text-sm font-bold tracking-widest uppercase" onClick={(e) => handleNavClick(e, '#booking')}>Book Now</a>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+// --- Hero Component ---
+const Hero = () => {
+  return (
+    <div className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[10s] scale-105 animate-[pulse_10s_infinite]" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=2000&auto=format&fit=crop')" }}>
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
+      </div>
+      <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
+        <div className="mb-8 inline-flex items-center gap-3 px-6 py-2 border border-white/30 rounded-full bg-white/10 backdrop-blur-md">
+          <span className="w-2 h-2 rounded-full bg-brand-gold animate-pulse"></span>
+          <span className="text-[10px] tracking-[0.4em] uppercase text-white font-bold">Luxury Gel Artistry</span>
+        </div>
+        <h1 className="font-serif text-7xl md:text-[10rem] text-white mb-6 drop-shadow-2xl leading-none animate-fade-in-up">GEL’D <span className="text-brand-gold italic">by Alayna</span></h1>
+        <p className="font-serif text-2xl md:text-4xl text-white/90 italic mb-14 animate-fade-in-up [animation-delay:0.2s]">Private Nail Studio In Sugar Land, TX</p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-10 animate-fade-in-up [animation-delay:0.4s]">
+          <a href="#booking" className="w-full sm:w-auto px-20 py-5 bg-white text-gray-900 font-bold tracking-[0.3em] uppercase rounded-full hover:bg-brand-gold hover:text-white transition-all duration-300 shadow-2xl text-xs">Book Now</a>
+        </div>
+      </div>
+      <div className="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-lg py-10 border-t border-brand-gold/10 hidden md:block">
+        <div className="max-w-7xl mx-auto px-8 grid grid-cols-3 gap-10 text-center">
+          <div className="space-y-1"><h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-gold">Contacts</h4><p className="font-serif text-lg text-gray-800">+1 (346) 622-0221</p></div>
+          <div className="space-y-1 border-x border-brand-gold/20 px-4"><h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-gold">Hours</h4><p className="font-serif text-lg text-gray-800">Mon - Sat: 9am - 7pm</p></div>
+          <div className="space-y-1"><h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-gold">Location</h4><p className="font-serif text-lg text-gray-800">Sugar Land, TX</p></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Portfolio Component ---
+const Portfolio = () => {
+  const images = [
+    { id: 1, src: '', title: 'Patterned French Tips' },
+    { id: 2, src: '', title: 'Nude Almond Set' },
+    { id: 3, src: '', title: 'Red Heart French' },
+    { id: 4, src: '', title: 'Soft Pink Matte' },
+    { id: 5, src: '', title: 'Glossy Neutral' },
+    { id: 6, src: '', title: 'Pastel Perfection' },
+    { id: 7, src: '', title: 'Abstract Precision' },
+    { id: 8, src: '', title: 'Classic Short Square' },
+  ];
+
+  return (
+    <div className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="text-center mb-16">
+          <div className="inline-block border-2 border-gray-900 px-10 py-3 mb-6">
+            <h2 className="font-serif text-3xl tracking-[0.25em] text-gray-900 uppercase">OUR PHOTOS</h2>
+          </div>
+          <p className="text-brand-gold font-bold tracking-[0.4em] uppercase text-[10px]">Hand-Crafted Luxury Gallery</p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-12">
+          {images.map((img) => (
+            <div key={img.id} className="flex flex-col group">
+              <div className="relative overflow-hidden aspect-square bg-brand-bone border border-gray-100 shadow-sm">
+                {img.src ? <img src={img.src} alt={img.title} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><div className="w-8 h-[1px] bg-brand-gold/20"></div></div>}
+              </div>
+              <div className="mt-4 text-center"><span className="text-[10px] text-gray-800 font-bold tracking-[0.2em] uppercase">{img.title}</span></div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-20 text-center"><a href="https://www.instagram.com/geldbyalayna/" target="_blank" className="inline-block px-14 py-4 border border-black text-black font-bold tracking-[0.3em] uppercase text-[10px] hover:bg-black hover:text-white transition-all">Visit Instagram</a></div>
+      </div>
+    </div>
+  );
+};
+
+// --- About Component ---
+const About = () => (
+  <div className="py-24 px-4 md:px-8 max-w-7xl mx-auto bg-brand-white">
+    <div className="grid md:grid-cols-2 gap-16 items-center">
+      <div className="relative group">
+        <div className="relative z-10 overflow-hidden rounded-sm shadow-2xl border-4 border-white">
+          <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=1200&auto=format&fit=crop" alt="Art" className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105" />
+        </div>
+        <div className="absolute -bottom-10 -right-10 w-full h-full border border-brand-gold/20 -z-0 rounded-sm"></div>
+      </div>
+      <div className="space-y-8 md:pl-4">
+        <span className="text-brand-gold font-bold tracking-[0.3em] uppercase text-xs block">Premium Experience</span>
+        <h2 className="font-serif text-4xl md:text-6xl text-gray-900">Artistry in <span className="italic text-brand-gold">Every Set</span></h2>
+        <p className="text-xl text-gray-600 leading-relaxed font-light italic border-l-2 border-brand-blush pl-6">"Dedicated to providing high-end, custom nail designs with a focus on quality and detail."</p>
+        <p className="text-gray-600 leading-relaxed text-lg">At GEL'D, we believe your nails are a canvas. Our private studio is dedicated to those who view nail care as a ritual.</p>
+      </div>
+    </div>
+  </div>
+);
+
+// --- Services Component ---
+const Services = () => {
+  const categories = [
+    { title: "Manicures", price: "$30", icon: <Sparkles className="text-brand-gold w-8 h-8" />, items: ["Basic Manicure", "Nail Shaping", "Cuticle Care"] },
+    { title: "GEL X Sets", price: "$50+", icon: <Diamond className="text-brand-gold w-8 h-8" />, items: ["Full GEL X Extension", "Custom Lengths", "Natural Look"] },
+    { title: "Soak-Offs", price: "$10+", icon: <Paintbrush className="text-brand-gold w-8 h-8" />, items: ["Sets by Alayna ($10)", "Foreign Sets ($15)", "Safe Removal"] }
+  ];
+  return (
+    <div className="py-24 bg-brand-bone">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="text-center mb-16"><h2 className="font-serif text-4xl md:text-5xl text-gray-900 mb-4">Services & Pricing</h2><div className="w-16 h-0.5 bg-brand-gold mx-auto mt-6"></div></div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {categories.map((service, i) => (
+            <div key={i} className="bg-white p-10 rounded-sm shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group border border-gray-100">
+              <div className="mb-6 p-4 rounded-full bg-brand-blush/50 group-hover:scale-110 transition-transform">{service.icon}</div>
+              <h3 className="font-serif text-2xl text-gray-900 mb-2">{service.title}</h3>
+              <span className="text-brand-gold font-bold tracking-widest">{service.price}</span>
+              <ul className="space-y-3 mt-6">{service.items.map((item, j) => <li key={j} className="text-gray-600 text-sm font-light">{item}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Policy Component ---
+const Policy = () => (
+  <div className="py-24 px-4 md:px-8 max-w-7xl mx-auto">
+    <div className="text-center mb-16"><h2 className="font-serif text-4xl text-gray-900 mb-4">Prepare & Policy</h2><div className="w-12 h-0.5 bg-brand-gold mx-auto"></div></div>
+    <div className="grid md:grid-cols-3 gap-12 text-center">
+      <div className="space-y-4"><CreditCard className="mx-auto w-10 h-10 text-brand-gold" /><h3 className="font-serif text-xl">Deposit</h3><p className="text-gray-600">$15 Non-refundable deposit required.</p></div>
+      <div className="space-y-4"><Clock className="mx-auto w-10 h-10 text-brand-gold" /><h3 className="font-serif text-xl">Arrival</h3><p className="text-gray-600">Please arrive with bare nails. 10min grace period.</p></div>
+      <div className="space-y-4"><Camera className="mx-auto w-10 h-10 text-brand-gold" /><h3 className="font-serif text-xl">Inspo</h3><p className="text-gray-600">Have your inspiration photos ready!</p></div>
+    </div>
+  </div>
+);
+
+// --- Contact Component ---
+const Contact = () => {
+  const [formState, setFormState] = useState('idle');
+  const handleSubmit = (e) => { e.preventDefault(); setFormState('loading'); setTimeout(() => setFormState('success'), 1500); };
+
+  return (
+    <div className="py-24 bg-brand-bone">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 grid lg:grid-cols-2 gap-16">
+        <div className="bg-white p-10 md:p-16 rounded-sm shadow-sm border border-gray-100">
+          {formState === 'success' ? <div className="text-center py-20"><CheckCircle className="w-16 h-16 text-brand-gold mx-auto mb-6" /><h2 className="font-serif text-3xl mb-4">Sent to Alayna</h2><button onClick={() => setFormState('idle')} className="text-brand-gold border-b border-brand-gold pb-1 uppercase tracking-widest text-xs">New request</button></div> : (
+            <form onSubmit={handleSubmit} className="space-y-10">
+              <h2 className="font-serif text-4xl text-center mb-12">Booking Request</h2>
+              <div className="grid md:grid-cols-2 gap-10">
+                <input type="text" placeholder="Name" className="w-full border border-gray-100 p-3 bg-brand-bone/30 outline-none" required />
+                <input type="email" placeholder="Email" className="w-full border border-gray-100 p-3 bg-brand-bone/30 outline-none" required />
+              </div>
+              <textarea placeholder="Notes / Preferred Dates" rows={4} className="w-full border border-gray-100 p-3 bg-brand-bone/30 outline-none resize-none" required></textarea>
+              <button type="submit" className="w-full py-4 bg-black text-white font-bold tracking-widest uppercase hover:bg-brand-gold transition-all">Send Request</button>
+            </form>
+          )}
+        </div>
+        <div className="space-y-12">
+          <div className="bg-white border border-gray-100 aspect-video flex items-center justify-center rounded-sm"><Sparkles className="w-6 h-6 text-brand-gold/30" /></div>
+          <div><h2 className="font-serif text-5xl mb-6">Contact Us</h2><p className="text-gray-500 text-lg italic">Ready to be GEL'D? Sugar Land, TX private studio.</p></div>
+          <div className="space-y-6"><div className="flex gap-4"><MapPin className="text-brand-gold" /><span>Sugar Land, TX</span></div><div className="flex gap-4"><Clock className="text-brand-gold" /><span>Mon - Sat: 9am - 7pm</span></div></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Footer Component ---
+const Footer = () => (
+  <footer className="bg-white py-12 border-t border-brand-gold/20">
+    <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="font-serif text-xl font-bold text-brand-gold">GEL’D <span className="text-gray-400 font-light italic">by Alayna</span></div>
+      <div className="text-[10px] uppercase tracking-widest text-gray-500">© {new Date().getFullYear()} GEL'D by Alayna. All Rights Reserved.</div>
+      <a href="https://instagram.com/geldbyalayna" target="_blank" className="text-gray-400 hover:text-brand-gold transition-colors text-[10px] tracking-widest uppercase font-bold">Instagram</a>
+    </div>
+  </footer>
+);
+
+// --- Main App Entry ---
+const App = () => (
+  <div className="min-h-screen flex flex-col">
+    <Navbar />
+    <main className="flex-grow">
+      <section id="home"><Hero /></section>
+      <section id="about"><About /></section>
+      <section id="services"><Services /></section>
+      <section id="portfolio"><Portfolio /></section>
+      <section id="policy"><Policy /></section>
+      <section id="booking"><Contact /></section>
+    </main>
+    <Footer />
+  </div>
+);
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<React.StrictMode><App /></React.StrictMode>);
